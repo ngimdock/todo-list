@@ -19,11 +19,11 @@ const SearchBar = ({onAddTask, onSearchTask}) => {
 
 	return(
 		<Form className="searchBar">
-		  <Form.Group className="mb-3">
+		  <Form.Group className="mb-3" >
 		  	<div className="search-box">
-		  		<Button variant="dark" type="submit" onClick={handleClickToSearch}>Rechercher</Button>
+		  		<Button variant="dark" type="submit" className="btns" onClick={handleClickToSearch} >Rechercher</Button>
 		    	<Form.Control className="input-text" type="text" placeholder="ajouter ou rechercher les taches" value={textValue} onChange= {(event) => setTextValue(event.target.value)}  />
-		  		<Button variant="dark" type="submit" onClick={handleClickToAdd}>Ajouter</Button>		  		
+		  		<Button variant="dark" type="submit" className="btns" onClick={handleClickToAdd}>Ajouter</Button>		  		
 		  	</div>
 		  </Form.Group>
 		</Form>

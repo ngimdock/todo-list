@@ -23,7 +23,7 @@ const TaskRow = ({task, onDeleteTask, onCompletetask}) => {
 	return (
 		<div className={className} >
 			<span> <Form.Check variant="dark" type="checkbox" value ={checkValue} onClick={handleCheckChange} /></span>
-			<span>{task.name}</span>
+			<span className="task-name">{task.name}</span>
 			<span className="delete"> <AiFillCloseCircle onClick={handleClickToDelete} /></span>
 		</div>
 	);

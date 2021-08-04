@@ -7,6 +7,8 @@ import Statistiques from './Statistiques';
 import '../css/App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
+import { BiUpsideDown } from "react-icons/bi";
+
 class App extends Component {
 
   constructor(props){
@@ -22,12 +24,12 @@ class App extends Component {
   }
 
   handleAdd = (taskTOadd) => {
-    const taskList = [...this.state.taskList];
-    const id = new Date().getTime();
-    taskList.unshift({id, name : taskTOadd, isCompleted : false});
-    this.setState({taskList});
-
-    console.log(taskList)
+    if( taskTOadd !== ""){
+      const taskList = [...this.state.taskList];
+      const id = new Date().getTime();
+      taskList.unshift({id, name : taskTOadd, isCompleted : false});
+      this.setState({taskList});
+    }
   };
 
   handleDelete = (id) => {
@@ -92,6 +94,7 @@ class App extends Component {
 
           <div className="task-box">
             {
+              this.state.taskList.length === 0 ? <p className="no-task">Aucune tache pour le moment <BiUpsideDown /> </p> :
               this.state.taskList.map(task => <TaskRow  key={task.id} task={task} onDeleteTask = {this.handleDelete} onCompletetask ={this.handleCompleted} />)
             }
           </div>

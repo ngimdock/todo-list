@@ -44,7 +44,7 @@ body{
   background: #212529;
   color: white;
   padding-top: 10px;
-  margin-bottom: 30px;
+  margin: 10px 0;
 }
 .statistiques p{
   line-height: 10px !important;
@@ -66,7 +66,7 @@ h1{
   align-items: center;
 }
 
-.ajout-rech{
+.headTitle{
   color: white;
   font-size: 16px;
   text-align: center !important;
@@ -133,6 +133,16 @@ h1{
   text-align: center;
 }
 
+.by-ngimdock{
+  text-align: center;
+  font-family: cursive sans-serif;
+  font-size: 12px;
+  font-style: italic;
+  color: gray;
+  opacity: 0.6;
+  padding-bottom: 15px;
+}
+
 @media screen and (max-width : 656px){
   .App{
     width: 90%;
@@ -153,7 +163,7 @@ h1{
 
   .task-box{
     width: 100%;
-    padding: 0 20px !important;
+    padding: 0 10px !important;
   }
 
   .no-task{
@@ -166,4 +176,13 @@ h1{
 
 }
 
+.modifier{
+  margin-right: 20px;
+  font-size: 20px;
+  cursor: pointer;
+}
 
+.delete{
+  cursor: pointer;
+  font-size: 20px;
+}

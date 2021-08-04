@@ -1,9 +1,19 @@
 import React, {useState} from 'react';
 
 import {Form} from 'react-bootstrap';
-import { AiFillCloseCircle } from 'react-icons/ai';
+import { AiFillCloseCircle, AiFillEdit } from 'react-icons/ai';
 
-const TaskRow = ({task, onDeleteTask, onCompletetask}) => {
+const TaskRow = (props) => {
+
+	const {
+			task, 
+			onDeleteTask, 
+			onCompletetask, 
+			isModifying , 
+			onSetIsModifying, 
+			idOftaskTomodify, 
+			onSetIdOftaskTomodify
+			} = props;
 
 	const [checkValue, setCheckValue] = useState(false);
 
@@ -24,7 +34,12 @@ const TaskRow = ({task, onDeleteTask, onCompletetask}) => {
 		<div className={className} >
 			<span> <Form.Check variant="dark" type="checkbox" value ={checkValue} onClick={handleCheckChange} /></span>
 			<span className="task-name">{task.name}</span>
-			<span className="delete"> <AiFillCloseCircle onClick={handleClickToDelete} /></span>
+			<span className="delete"> 
+				{
+					isModifying ? null : <AiFillEdit className="modifier" onClick={()=> {onSetIsModifying(); onSetIdOftaskTomodify(task)}} /> 
+				}
+				<AiFillCloseCircle onClick={handleClickToDelete} className="delete" />
+			</span>
 		</div>
 	);
 };

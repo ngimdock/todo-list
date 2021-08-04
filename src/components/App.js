@@ -7,7 +7,7 @@ import Statistiques from './Statistiques';
 import '../css/App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-import { BiUpsideDown } from "react-icons/bi";
+import { BiUpsideDown, BiTired, BiHeartCircle } from "react-icons/bi";
 
 class App extends Component {
 
@@ -16,15 +16,21 @@ class App extends Component {
 
     this.state = {
       taskList : [
-      {id:1, name : "aller dormir", isCompleted : false},
-      {id:2, name : "lire mon livre", isCompleted : false},
-      {id:3, name : "laver mes assiettes", isCompleted : false},
-      ]
+      ],
+
+      isModifying : false, // cette variable me permet de savoir si l'utilisateur est entrain de modifier une tache
+
+      valueModify : "", // la valeur de la tache en cours de modification
+      idOftaskTomodify : null
+
     }
   }
 
+// cette foction permet d'ajouter une nouvelle tache
   handleAdd = (taskTOadd) => {
-    if( taskTOadd !== ""){
+    if(taskTOadd === "" || taskTOadd.length > 20){
+      alert("Le nom de la tache ne dois pas etre vide et superieur a plus de 20 caracteres " + <BiTired />)
+    }else{
       const taskList = [...this.state.taskList];
       const id = new Date().getTime();
       taskList.unshift({id, name : taskTOadd, isCompleted : false});
@@ -32,6 +38,7 @@ class App extends Component {
     }
   };
 
+// cette fonction permet de supprimer une nouvelle tache
   handleDelete = (id) => {
     console.log(id);
     const taskList = [...this.state.taskList];
@@ -39,6 +46,7 @@ class App extends Component {
     this.setState({taskList : tmp});
   };
 
+// cette fonction permet de faire la recherche des taches
   handleSearch = (textToSearch) => {
     const taskList = [...this.state.taskList];
     const tmp = taskList.filter((task) => {
@@ -48,7 +56,7 @@ class App extends Component {
     this.setState({taskList : tmp});
   };
 
-
+// cette fonction permet de marquer une tache comme complete ou incomplete
   handleCompleted = (id) => {
     const taskList = [...this.state.taskList];
 
@@ -63,9 +71,9 @@ class App extends Component {
     })
 
     this.setState({taskList});
-    console.log(this.getNumberTaskCompleted())
   };
 
+// cette fonction renvoie le noumbre de tache deja realise
   getNumberTaskCompleted = () => {
     let numberOfTaskCompleted = 0;
 
@@ -74,33 +82,107 @@ class App extends Component {
         numberOfTaskCompleted += 1;
     })
 
-    console.log("get num")
-
     return numberOfTaskCompleted;
   };
 
+// cette fonction permet de changer la valeur de isModifying
+  setIsModifying = () => {
+    this.setState({isModifying : !this.state.isModifying});
+};
+
+setValueToModify = (value) => {
+  this.setState({valueModify : value})
+};
+
+// cette fonction permet de changer la valeur de idOftaskTomodify
+
+setIdOftaskTomodify = (task) => {
+  this.setState({idOftaskTomodify : task.id}) // modification de l'id
+
+  this.state.taskList.forEach( // la valeur a ;odifier par defaut est le nom de la tache en cours de modification
+    taskTmp => {
+      if(taskTmp.id === task.id){
+        this.setState({valueModify : task.name})
+      }
+    }
+  )
+  console.log(task);
+  console.log(this.state.valueModify);
+};
+
+// cette fonction permet de modifier une tache
+ handleModify = () => {
+  const taskList = [...this.state.taskList];
+  const idOftaskTomodify = this.state.idOftaskTomodify;
+
+  taskList.forEach(
+    (task) => {
+      if(task.id === idOftaskTomodify) {
+        task.name = this.state.valueModify;
+      }
+    }
+  )
+
+  this.setState({taskList});
+};
 
 
   render(){
+
+    let headTitle = null;
+
+    if(this.state.isModifying){
+      headTitle = <p className="headTitle">Vous allez modifier cette tache</p>;
+    }else{
+      headTitle = <p className="headTitle">Ajoutez, rechercher ou supprimez des taches</p>;
+    }
     return (
       <section className="App">
         <div className="mainContent">
           <h1>GESTIONNAIRE DE TACHES</h1>
-
+          {headTitle}
           <div>
-            <p className="ajout-rech">Ajoutez, rechercher ou supprimez des taches</p>
-            <SearchBar onAddTask =  {this.handleAdd} onSearchTask = {this.handleSearch} />
+            
+            <SearchBar 
+                onAddTask =  {this.handleAdd} 
+                onSearchTask = {this.handleSearch} 
+                isModifying={this.state.isModifying}
+                onSetIsModifying = {this.setIsModifying}
+                valueModify={this.state.valueModify}
+                onSetValueToModify = {this.setValueToModify}
+                onModifyTask = {this.handleModify}
+                />
           </div>
 
           <div className="task-box">
             {
               this.state.taskList.length === 0 ? <p className="no-task">Aucune tache pour le moment <BiUpsideDown /> </p> :
-              this.state.taskList.map(task => <TaskRow  key={task.id} task={task} onDeleteTask = {this.handleDelete} onCompletetask ={this.handleCompleted} />)
+              this.state.taskList.map(
+                  (task) => {
+                    return (
+                      <TaskRow  
+                          key={task.id}
+                          task={task} 
+                          onDeleteTask = {this.handleDelete} 
+                          onCompletetask ={this.handleCompleted}
+                          isModifying ={this.state.isModifying}
+                          onSetIsModifying = {this.setIsModifying}
+                          idOftaskTomodify ={this.state.idOftaskTomodify}
+                          onSetIdOftaskTomodify ={this.setIdOftaskTomodify}
+                          />
+                    );
+                  } 
+              )
             }
           </div>
         </div>
 
-        <Statistiques totalTask ={this.state.taskList.length} completedTask ={this.getNumberTaskCompleted()} />
+        <Statistiques 
+            totalTask ={this.state.taskList.length} 
+            completedTask ={this.getNumberTaskCompleted()}
+
+            />
+        <p className="by-ngimdock">By ngimdock <BiHeartCircle /> {new Date().getFullYear()}</p>
       </section>
     );
   }

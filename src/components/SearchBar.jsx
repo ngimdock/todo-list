@@ -52,9 +52,9 @@ const SearchBar = (props) => {
 	let button = null;
 
 	if(isModifying){
-		button  = <Button className="btns" onClick = {handleClickToModify} >Modifier</Button>;
+		button  = <button className="btns modifierBtn" onClick = {handleClickToModify} >Modifier</button>;
 	}else{
-		button =  <Button variant="dark" type="submit" className="btns" onClick={handleClickToAdd}>Ajouter</Button>;	  		
+		button =  <button variant="dark" type="submit" className="btns ajouerBtn" onClick={handleClickToAdd}>Ajouter</button>;	  		
 	}
 
 	return(
@@ -62,9 +62,9 @@ const SearchBar = (props) => {
 		  <Form.Group className="mb-3" >
 		  	<div className="search-box">
 			  	{
-			  		isModifying ? null : <Button variant="dark" type="submit" className="btns" onClick={handleClickToSearch} >Rechercher</Button>
+			  		isModifying ? null : <button variant="dark" type="submit" className="btns rechercheBtn" onClick={handleClickToSearch} >Rechercher</button>
 			  	}
-		    	<Form.Control 
+		    	<input 
 		    		className="input-text" type="text" 
 		    		placeholder= "ajouter ou rechercher les taches" 
 		    		value={isModifying ? valueModify : textValue} 

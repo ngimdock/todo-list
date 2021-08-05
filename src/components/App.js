@@ -169,7 +169,7 @@ setIdOftaskTomodify = (task) => {
             {
                 this.state.inSearch ? (
                   <>
-                    <Button onClick={() => this.setInSearch(false)} className="quitter">Quiter</Button>
+                    <button onClick={() => this.setInSearch(false)} className="quitter">Quiter</button>
                     {
                       this.state.taskListSearch.length === 0 ? <div> <p className="no-task">Aucune tache correspondante</p></div>:
                       this.state.taskListSearch.map(

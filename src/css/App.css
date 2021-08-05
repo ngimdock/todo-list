@@ -83,6 +83,19 @@ h1{
 .input-text{
   width: 50% !important;
   margin: 0 10px;
+  height: 40px;
+  border: 0;
+  outline: 0;
+  padding: 5px;
+  color: black;
+  font-family: sans-serif;
+  border-radius: 6px;
+  box-shadow: 0 0 15px gray;
+  transition: .5s transform ease;
+}
+
+.input-text:focus{
+  transform: scale(1.05);
 }
 
 .task-box{
@@ -143,6 +156,34 @@ h1{
   padding-bottom: 15px;
 }
 
+.quitter, .btns{
+  margin: 0 auto !important;
+  background: #1E212F !important;
+  color: white !important;
+  border-radius: 2px !important;
+  outline: 0 !important;
+  border: 0 !important;
+  padding:0 10px;
+}
+
+.quitter:focus{
+  outline: 0 !important;
+  border: 0 !important;
+}
+
+.quitter{
+  height: 35px;
+  padding: 5px;
+  text-align: center;
+}
+
+.btns:focus{
+  outline: 0 !important;
+  border: 0 !important;
+}
+
+
+
 @media screen and (max-width : 656px){
   .App{
     width: 90%;
@@ -186,6 +227,27 @@ h1{
   cursor: pointer;
   font-size: 20px;
 }
+
+.ajouerBtn{
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  padding-top: 0 !important;
+}
+
+.input-text{
+  height: 34px;
+}
+
 .quitter{
-  margin: 0 auto !important;
+  font-size: 14px !important;
+}
+
+.modifierBtn, .rechercheBtn{
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  padding: 5px !important;
 }

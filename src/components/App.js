@@ -3,6 +3,7 @@ import {React, Component} from 'react';
 import SearchBar from './SearchBar';
 import TaskRow from './TaskRow';
 import Statistiques from './Statistiques';
+import {Button} from 'react-bootstrap';
 
 import '../css/App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -15,19 +16,22 @@ class App extends Component {
     super(props);
 
     this.state = {
-      taskList : [
-      ],
+      taskList : [],
+      taskListSearch : [],
 
       isModifying : false, // cette variable me permet de savoir si l'utilisateur est entrain de modifier une tache
 
       valueModify : "", // la valeur de la tache en cours de modification
-      idOftaskTomodify : null
+      idOftaskTomodify : null,
+
+      inSearch: false // cette variable me permet de savoir si l'utilisateur recherche une tache pour afficher une liste differente a l'ecran
 
     }
   }
 
 // cette foction permet d'ajouter une nouvelle tache
   handleAdd = (taskTOadd) => {
+    this.setState({inSearch : false})
     if(taskTOadd === "" || taskTOadd.length > 20){
       alert("Le nom de la tache ne dois pas etre vide et superieur a plus de 20 caracteres " + <BiTired />)
     }else{
@@ -40,26 +44,34 @@ class App extends Component {
 
 // cette fonction permet de supprimer une nouvelle tache
   handleDelete = (id) => {
-    console.log(id);
     const taskList = [...this.state.taskList];
     const tmp = taskList.filter(task => task.id !== id);
     this.setState({taskList : tmp});
   };
 
+  setInSearch = (value) => {
+  this.setState({inSearch : value});
+};
+
 // cette fonction permet de faire la recherche des taches
   handleSearch = (textToSearch) => {
-    const taskList = [...this.state.taskList];
-    const tmp = taskList.filter((task) => {
-      return task.name.includes(textToSearch);
-    });
+    const taskListSearch = [...this.state.taskList];
+    const tmp = this.state.taskList.filter((task) => (
+       task.name.includes(textToSearch)
+    ));
 
-    this.setState({taskList : tmp});
+    this.setState({taskListSearch: tmp})
+
+    if(this.state.taskListSearch.length === 0){
+      return <p className="no-task">aucune tache correspondante</p>;
+    }else{
+      return this.state.taskListSearch;
+    }
   };
 
 // cette fonction permet de marquer une tache comme complete ou incomplete
   handleCompleted = (id) => {
     const taskList = [...this.state.taskList];
-
     taskList.forEach((task) => {
       if(task.id === id){
         if(!task.isCompleted){
@@ -106,8 +118,6 @@ setIdOftaskTomodify = (task) => {
       }
     }
   )
-  console.log(task);
-  console.log(this.state.valueModify);
 };
 
 // cette fonction permet de modifier une tache
@@ -151,28 +161,56 @@ setIdOftaskTomodify = (task) => {
                 valueModify={this.state.valueModify}
                 onSetValueToModify = {this.setValueToModify}
                 onModifyTask = {this.handleModify}
+                onSetInSearch = {this.setInSearch}
                 />
           </div>
 
           <div className="task-box">
             {
-              this.state.taskList.length === 0 ? <p className="no-task">Aucune tache pour le moment <BiUpsideDown /> </p> :
-              this.state.taskList.map(
-                  (task) => {
-                    return (
-                      <TaskRow  
-                          key={task.id}
-                          task={task} 
-                          onDeleteTask = {this.handleDelete} 
-                          onCompletetask ={this.handleCompleted}
-                          isModifying ={this.state.isModifying}
-                          onSetIsModifying = {this.setIsModifying}
-                          idOftaskTomodify ={this.state.idOftaskTomodify}
-                          onSetIdOftaskTomodify ={this.setIdOftaskTomodify}
-                          />
-                    );
-                  } 
-              )
+                this.state.inSearch ? (
+                  <>
+                    <Button onClick={() => this.setInSearch(false)} className="quitter">Quiter</Button>
+                    {
+                      this.state.taskListSearch.length === 0 ? <div> <p className="no-task">Aucune tache correspondante</p></div>:
+                      this.state.taskListSearch.map(
+                        (task) => {
+                          return (                                                       
+                            <TaskRow  
+                                key={task.id}
+                                task={task} 
+                                onDeleteTask = {this.handleDelete} 
+                                onCompletetask ={this.handleCompleted}
+                                isModifying ={this.state.isModifying}
+                                onSetIsModifying = {this.setIsModifying}
+                                idOftaskTomodify ={this.state.idOftaskTomodify}
+                                onSetIdOftaskTomodify ={this.setIdOftaskTomodify}
+                                />
+                          );
+                        } 
+                      )
+                    }
+                  </>
+
+                  ) :(
+                  this.state.taskList.length === 0 ? <p className="no-task">Aucune tache pour le moment <BiUpsideDown /> </p> :
+                  this.state.taskList.map(
+                      (task) => {
+                        return (
+                          <TaskRow  
+                              key={task.id}
+                              task={task} 
+                              onDeleteTask = {this.handleDelete} 
+                              onCompletetask ={this.handleCompleted}
+                              isModifying ={this.state.isModifying}
+                              onSetIsModifying = {this.setIsModifying}
+                              idOftaskTomodify ={this.state.idOftaskTomodify}
+                              onSetIdOftaskTomodify ={this.setIdOftaskTomodify}
+                              />
+                        );
+                      } 
+                  )
+                )
+              
             }
           </div>
         </div>

@@ -18,7 +18,6 @@ const TaskRow = (props) => {
 	const [checkValue, setCheckValue] = useState(false);
 
 	const handleClickToDelete = () => {
-		console.log("hello guy");
 		onDeleteTask(task.id);
 	};
 

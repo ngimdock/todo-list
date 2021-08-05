@@ -10,7 +10,8 @@ const SearchBar = (props) => {
 			onSetIsModifying, 
 			valueModify, 
 			onSetValueToModify, 
-			onModifyTask
+			onModifyTask,
+			onSetInSearch
 			} = props
 
 	const [textValue, setTextValue] = useState("");
@@ -27,13 +28,14 @@ const SearchBar = (props) => {
 		if(textValue === ""){
 			alert("Entrez la valeur a rechercher")
 		}else{
+			onSetInSearch(true);
 			onSearchTask(textValue);
 		}
 	};
 
 	const handleClickToModify = (event) => {
 		event.preventDefault();
-		onModifyTask();
+		onModifyTask()
 		onSetIsModifying();
 	};
 

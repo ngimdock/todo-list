@@ -3,7 +3,6 @@ import {React, Component} from 'react';
 import SearchBar from './SearchBar';
 import TaskRow from './TaskRow';
 import Statistiques from './Statistiques';
-import {Button} from 'react-bootstrap';
 
 import '../css/App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -55,7 +54,6 @@ class App extends Component {
 
 // cette fonction permet de faire la recherche des taches
   handleSearch = (textToSearch) => {
-    const taskListSearch = [...this.state.taskList];
     const tmp = this.state.taskList.filter((task) => (
        task.name.includes(textToSearch)
     ));
